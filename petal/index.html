@@ -1178,7 +1178,7 @@
                             <p style="color: hsl(var(--foreground) / 0.8); margin-bottom: 1rem;">
                                 Whether you’re curious about how Petal Compost works, want to share your experience, or need help getting started, we’re just a message away.
                             </p>
-                            <button type="submit" class="btn-primary" style="margin-top: 0.75rem;">Submit</button>
+                            <button type="submit" form="contactForm" class="btn-primary" style="margin-top: 0.75rem;">Submit</button>
                             <p id="contactSuccess" style="display:none; margin-top: 1rem; color: hsl(var(--primary)); font-weight: 500;">
                                 Message sent. Thank you for reaching out!
                             </p>
@@ -1346,11 +1346,15 @@
 
             const sections = ['hero', 'problem', 'solution', 'product', 'order'];
 
-            const canUseBeacon =
+            const canUseNetwork =
                 typeof location !== 'undefined' &&
                 (location.protocol === 'http:' || location.protocol === 'https:');
 
             const sendLog = (payload) => {
+                // When viewing the file directly (file://), skip network logging entirely
+                if (!canUseNetwork) {
+                    return;
+                }
                 try {
                     const body = JSON.stringify({
                         sessionId,
@@ -1361,7 +1365,7 @@
                         ...payload,
                     });
 
-                    if (canUseBeacon && navigator.sendBeacon) {
+                    if (navigator.sendBeacon) {
                         navigator.sendBeacon(ENDPOINT, new Blob([body], { type: 'application/json' }));
                     } else {
                         fetch(ENDPOINT, {
@@ -1372,7 +1376,9 @@
                     }
                 } catch (e) {
                     // Ignore logging errors so they don't break the page
-                    console && console.warn && console.warn('Logging failed', e);
+                    if (typeof console !== 'undefined' && console.warn) {
+                        console.warn('Logging failed', e);
+                    }
                 }
             };
 
