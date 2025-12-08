@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Petal Compost</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Belleza&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: 39 56% 93%;
+            --foreground: 20 15% 25%;
+            --card: 39 56% 93%;
+            --card-foreground: 20 15% 25%;
+            --primary: 122 16% 69%;
+            --primary-foreground: 39 10% 10%;
+            --secondary: 39 30% 88%;
+            --secondary-foreground: 20 15% 25%;
+            --muted: 39 30% 88%;
+            --muted-foreground: 20 15% 45%;
+            --accent: 13 68% 62%;
+            --accent-foreground: 39 10% 10%;
+            --border: 39 30% 85%;
+            --input: 39 30% 85%;
+            --ring: 122 16% 69%;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Alegreya', serif;
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Belleza', sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 0 1.5rem;
+            }
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            width: 100%;
+            border-bottom: 1px solid hsl(var(--border) / 0.4);
+            background-color: hsl(var(--background) / 0.95);
+            backdrop-filter: blur(8px);
+        }
+
+        .header-content {
+            display: flex;
+            height: 4rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        @media (min-width: 768px) {
+            .header-content {
+                padding: 0 1.5rem;
+            }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo svg {
+            height: 1.5rem;
+            width: 1.5rem;
+            color: hsl(var(--accent));
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-family: 'Belleza', sans-serif;
+            font-size: 1.25rem;
+        }
+
+        nav {
+            display: none;
+            align-items: center;
+            gap: 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        @media (min-width: 768px) {
+            nav {
+                display: flex;
+            }
+        }
+
+        nav a {
+            color: hsl(var(--foreground) / 0.6);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        nav a:hover {
+            color: hsl(var(--foreground) / 0.8);
+        }
+
+        .order-btn {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0.625rem 1rem;
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+            text-decoration: none;
+            transition: background-color 0.15s;
+            height: 2.5rem;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        @media (min-width: 768px) {
+            .order-btn {
+                display: flex;
+            }
+        }
+
+        .order-btn:hover {
+            background-color: hsl(var(--primary) / 0.9);
+        }
+
+        .menu-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            height: 2.5rem;
+            width: 2.5rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.15s;
+        }
+
+        @media (min-width: 768px) {
+            .menu-btn {
+                display: none;
+            }
+        }
+
+        .menu-btn:hover {
+            background-color: hsl(var(--accent));
+            color: hsl(var(--accent-foreground));
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            width: 100%;
+            padding: 4rem 0;
+        }
+
+        @media (min-width: 768px) {
+            .hero {
+                padding: 6rem 0;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .hero {
+                padding: 8rem 0;
+            }
+        }
+
+        .hero-content {
+            display: grid;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        @media (min-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 4rem;
+            }
+        }
+
+        .hero-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1.5rem;
+            text-align: center;
+        }
+
+        @media (min-width: 1024px) {
+            .hero-text {
+                text-align: left;
+            }
+        }
+
+        .hero h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            color: hsl(var(--accent));
+        }
+
+        @media (min-width: 640px) {
+            .hero h1 {
+                font-size: 3rem;
+                line-height: 1;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .hero h1 {
+                font-size: 3.75rem;
+                line-height: 1;
+            }
+        }
+
+        .hero p {
+            max-width: 600px;
+            color: hsl(var(--foreground) / 0.8);
+            margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+            .hero p {
+                font-size: 1.25rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .hero p {
+                margin: 0;
+            }
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        @media (min-width: 640px) {
+            .hero-buttons {
+                flex-direction: row;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .hero-buttons {
+                justify-content: flex-start;
+            }
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0 2rem;
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+            text-decoration: none;
+            transition: background-color 0.15s;
+            height: 2.75rem;
+        }
+
+        .btn-primary:hover {
+            background-color: hsl(var(--primary) / 0.9);
+        }
+
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0 2rem;
+            border: 1px solid hsl(var(--input));
+            background-color: hsl(var(--background));
+            color: inherit;
+            text-decoration: none;
+            transition: all 0.15s;
+            height: 2.75rem;
+        }
+
+        .btn-outline:hover {
+            background-color: hsl(var(--accent));
+            color: hsl(var(--accent-foreground));
+        }
+
+        .hero-images {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: nowrap;
+        }
+
+        @media (min-width: 640px) {
+            .hero-images {
+                gap: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .hero-images {
+                gap: 2rem;
+            }
+        }
+
+        .hero-image-wrapper {
+            flex: 1 1 0;
+            min-width: 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.75rem;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            border-radius: 0.75rem;
+        }
+
+        /* Section Styles */
+        section {
+            width: 100%;
+            padding: 3rem 0;
+        }
+
+        @media (min-width: 768px) {
+            section {
+                padding: 4.5rem 0;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            section {
+                padding: 5.5rem 0;
+            }
+        }
+
+        .section-secondary {
+            background-color: hsl(var(--secondary));
+        }
+
+        .section-content {
+            max-width: 896px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .section-label {
+            display: inline-block;
+            border-radius: 0.5rem;
+            background-color: hsl(var(--muted));
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .section h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            margin-bottom: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .section h2 {
+                font-size: 2.25rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .section h2 {
+                font-size: 3rem;
+                line-height: 1;
+            }
+        }
+
+        .section p {
+            max-width: 700px;
+            color: hsl(var(--foreground) / 0.8);
+            margin: 0 auto 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .section p {
+                font-size: 1.25rem;
+                line-height: 1.625;
+            }
+        }
+
+        /* Alert Box */
+        .alert {
+            position: relative;
+            width: 100%;
+            border-radius: 0.5rem;
+            border: 1px solid hsl(var(--accent) / 0.5);
+            padding: 1rem;
+            max-width: 672px;
+            margin: 0 auto;
+            background-color: hsl(var(--accent) / 0.1);
+            color: hsl(var(--accent));
+        }
+
+        .alert svg {
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            height: 1rem;
+            width: 1rem;
+            color: hsl(var(--accent));
+        }
+
+        .alert h5 {
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+            font-family: 'Belleza', sans-serif;
+            color: hsl(var(--accent));
+        }
+
+        .alert-content {
+            font-size: 0.875rem;
+            color: hsl(var(--accent) / 0.8);
+            padding-left: 1.75rem;
+        }
+
+        /* Solution Cards */
+        .solution-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 3rem;
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .solution-step {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1 1 220px;
+            min-width: 0;
+        }
+
+        .solution-arrow {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: hsl(var(--accent));
+            opacity: 0.9;
+        }
+
+        .solution-arrow svg {
+            width: 1.75rem;
+            height: 1.75rem;
+        }
+
+        @media (max-width: 640px) {
+            .solution-cards {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .solution-step {
+                width: 100%;
+            }
+
+            .solution-arrow svg {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+        }
+
+        .solution-card {
+            text-align: center;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+        }
+
+        .solution-card-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .solution-icon {
+            border-radius: 9999px;
+            background-color: hsl(var(--primary) / 0.1);
+            padding: 1rem;
+        }
+
+        .solution-icon svg {
+            height: 2rem;
+            width: 2rem;
+            color: hsl(var(--primary));
+        }
+
+        .solution-card-title {
+            font-weight: 600;
+            font-size: 1.25rem;
+            letter-spacing: -0.025em;
+        }
+
+        .solution-card-content {
+            padding: 1.5rem;
+            padding-top: 0;
+        }
+
+        .solution-card-content p {
+            color: hsl(var(--foreground) / 0.7);
+        }
+
+        /* Solution Images */
+        .solution-image-wrapper {
+            flex: 1 1 0;
+            min-width: 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.75rem;
+        }
+
+        .solution-image {
+            width: 100%;
+            max-width: 220px;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            margin: 0 auto;
+            border-radius: 0.75rem;
+        }
+
+        /* Product Section */
+        .product-section {
+            display: grid;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        @media (min-width: 1024px) {
+            .product-section {
+                grid-template-columns: 1fr 1fr;
+                gap: 4rem;
+            }
+        }
+
+        .product-divider {
+            height: 1px;
+            max-width: 960px;
+            margin: 3rem auto;
+            background-color: hsl(var(--border));
+            opacity: 0.6;
+        }
+
+        .product-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .product-list {
+            display: grid;
+            gap: 1rem;
+            list-style: none;
+        }
+
+        .product-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .product-list svg {
+            margin-top: 0.25rem;
+            height: 1.25rem;
+            width: 1.25rem;
+            flex-shrink: 0;
+            color: hsl(var(--primary));
+        }
+
+        .product-list strong {
+            font-weight: 600;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: flex-end;
+            gap: 1rem;
+        }
+
+        .product-price-current {
+            font-size: 2.25rem;
+            font-weight: 700;
+        }
+
+        .product-price-old {
+            color: hsl(var(--foreground) / 0.6);
+            text-decoration: line-through;
+        }
+
+        /* Order Section */
+        .order-section {
+            max-width: 896px;
+            margin: 0 auto;
+            text-align: center;
+            border-radius: 1rem;
+            background-color: hsl(var(--accent) / 0.9);
+            padding: 2.5rem;
+            color: hsl(var(--accent-foreground));
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        @media (min-width: 768px) {
+            .order-section {
+                padding: 4rem;
+            }
+        }
+
+        .order-section svg {
+            height: 3rem;
+            width: 3rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .order-section h2 {
+            color: hsl(var(--accent-foreground));
+        }
+
+        .order-section p {
+            max-width: 600px;
+            color: hsl(var(--accent-foreground) / 0.8);
+            margin: 0 auto 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .order-section p {
+                font-size: 1.25rem;
+                line-height: 1.625;
+            }
+        }
+
+        .btn-order {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0 2rem;
+            background-color: hsl(var(--background));
+            color: hsl(var(--accent));
+            text-decoration: none;
+            transition: background-color 0.15s;
+            height: 2.75rem;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-order:hover {
+            background-color: hsl(var(--background) / 0.9);
+        }
+
+        /* Footer */
+        footer {
+            width: 100%;
+            border-top: 1px solid hsl(var(--border) / 0.4);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2.5rem 0;
+        }
+
+        @media (min-width: 768px) {
+            .footer-content {
+                flex-direction: row;
+                height: 6rem;
+                padding: 0;
+            }
+        }
+
+        .footer-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 0 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .footer-logo {
+                flex-direction: row;
+                gap: 0.5rem;
+                padding: 0;
+            }
+        }
+
+        .footer-logo a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .footer-logo svg {
+            height: 1.25rem;
+            width: 1.25rem;
+            color: hsl(var(--accent));
+        }
+
+        .footer-logo p {
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+
+        @media (min-width: 768px) {
+            .footer-logo p {
+                text-align: left;
+            }
+        }
+
+        .footer-copyright {
+            text-align: center;
+            font-size: 0.875rem;
+            color: hsl(var(--foreground) / 0.6);
+        }
+
+        @media (min-width: 768px) {
+            .footer-copyright {
+                text-align: left;
+            }
+        }
+
+        /* Order Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background-color: hsl(var(--background));
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.375rem;
+            transition: background-color 0.15s;
+            color: hsl(var(--foreground) / 0.6);
+        }
+
+        .modal-close:hover {
+            background-color: hsl(var(--muted));
+            color: hsl(var(--foreground));
+        }
+
+        .modal-close svg {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .modal-step h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: hsl(var(--foreground));
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: hsl(var(--foreground));
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid hsl(var(--input));
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+            transition: border-color 0.15s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: hsl(var(--ring));
+            box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+        }
+
+        .form-group input::placeholder {
+            color: hsl(var(--muted-foreground));
+        }
+
+        .status-bar-container {
+            width: 100%;
+            height: 0.5rem;
+            background-color: hsl(var(--muted));
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        .status-bar {
+            height: 100%;
+            background-color: hsl(var(--primary));
+            width: 0%;
+            border-radius: 9999px;
+            transition: width 1s ease-in-out;
+        }
+
+        @media (max-width: 640px) {
+            .modal-content {
+                padding: 1.5rem;
+            }
+
+            .modal-step h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1"></path>
+                    <circle cx="12" cy="8" r="2"></circle>
+                    <path d="M12 10v12"></path>
+                    <path d="M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z"></path>
+                    <path d="M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z"></path>
+                </svg>
+                <span class="logo-text">Petal Compost</span>
+            </a>
+            <nav>
+                <a href="#problem">The Problem</a>
+                <a href="#solution">Our Solution</a>
+                <a href="#product">The Product</a>
+                <a href="#contact">Contact Us</a>
+            </nav>
+            <div>
+                <button class="order-btn" onclick="openOrderModal()">Order Now</button>
+                <button class="menu-btn" aria-label="Toggle Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="4" x2="20" y1="12" y2="12"></line>
+                        <line x1="4" x2="20" y1="6" y2="6"></line>
+                        <line x1="4" x2="20" y1="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1>From Sacred Flowers to Living Soil</h1>
+                        <p>Transform sacred temple flowers into life-giving compost. Our beautiful terracotta composter makes it easy to honor tradition and nature, right from your balcony.</p>
+                        <div class="hero-buttons">
+                            <a href="#product" class="btn-primary">Explore The Product</a>
+                            <a href="#solution" class="btn-outline">How It Works</a>
+                        </div>
+                    </div>
+                    <div class="hero-images">
+                        <div class="hero-image-wrapper">
+                            <img src="images/petal_composter.png" alt="Hands holding rich, dark compost" class="hero-image">
+                        </div>
+                        <div class="hero-image-wrapper">
+                            <img src="images/dustbin.png" alt="A healthy, thriving plant in a pot" class="hero-image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Problem Section -->
+        <section id="problem" class="section-secondary">
+            <div class="container">
+                <div class="section-content">
+                    <div style="margin-bottom: 1.5rem;">
+                        <div class="section-label">The Dilemma</div>
+                        <h2>Honoring Tradition in a Modern World</h2>
+                        <p>Every day, countless flowers offered in devotion face an unfitting end. In urban apartments and societies, without access to soil, families are forced to dispose of these sacred offerings in the bin. This not only feels disrespectful but also contributes to landfill waste, a cycle of waste that feels at odds with the spirit of the offerings.</p>
+                    </div>
+                    <div class="alert">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="m15 9-6 6"></path>
+                            <path d="m9 9 6 6"></path>
+                        </svg>
+                        <h5>A Cycle of Guilt</h5>
+                        <div class="alert-content">Throwing away sacred flowers can feel like a small sin, a daily conflict between devotion and practicality.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Solution Section -->
+        <section id="solution">
+            <div class="container">
+                <div class="section-content">
+                    <div class="section-label">Our Solution</div>
+                    <h2 style="color: hsl(var(--accent));">A Divine New Beginning</h2>
+                    <p>Petal Compost introduces a simple, elegant way to compost your sacred flowers. It's more than a product; it's a practice of mindfulness, respect, and sustainability.</p>
+                </div>
+                <div class="solution-cards">
+                    <div class="solution-step">
+                        <div class="solution-image-wrapper">
+                            <img src="images/mandir.png" alt="Mandir" class="solution-image">
+                        </div>
+                        <div class="solution-arrow" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14"></path>
+                                <path d="m13 6 6 6-6 6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="solution-step">
+                        <div class="solution-image-wrapper">
+                            <img src="images/flowers_collected.png" alt="Flowers Collected" class="solution-image">
+                        </div>
+                        <div class="solution-arrow" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14"></path>
+                                <path d="m13 6 6 6-6 6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="solution-step">
+                        <div class="solution-image-wrapper">
+                            <img src="images/composter.png" alt="Composter" class="solution-image">
+                        </div>
+                        <div class="solution-arrow" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14"></path>
+                                <path d="m13 6 6 6-6 6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="solution-step">
+                        <div class="solution-image-wrapper">
+                            <img src="images/compost_mix.png" alt="Compost Mix" class="solution-image">
+                        </div>
+                        <div class="solution-arrow" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14"></path>
+                                <path d="m13 6 6 6-6 6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="solution-step">
+                        <div class="solution-image-wrapper">
+                            <img src="images/petal_composter.png" alt="Petal Composter" class="solution-image">
+                        </div>
+                        <!-- no arrow on last step -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Section -->
+        <section id="product" class="section-secondary">
+            <div class="container">
+                <div class="section-content" style="margin-bottom: 2rem;">
+                    <div class="section-label">The Product</div>
+                </div>
+                <div class="product-section">
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <img src="images/petal_compoter_starter_kit.png" alt="Petal Composter Starter Kit"
+                            style="max-width: 70%; height: auto; object-fit: contain; border-radius: 1rem; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+                    </div>
+                    <div class="product-content">
+                        <div>
+                            <h2>Petal Composter Starter Kit</h2>
+                            <p style="max-width: 600px; margin: 0 0 1.5rem;">Elegantly designed and handcrafted from natural terracotta, our composter is the perfect addition to any modern home.</p>
+                        </div>
+                        <ul class="product-list">
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                                <span><strong>Handcrafted Terracotta Pot:</strong> Breathable material perfect for aerobic composting.</span>
+                            </li>
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                                <span><strong>Compost Starter Mix:</strong> A 1-month supply of our proprietary blend to kickstart the process.</span>
+                            </li>
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                                <span><strong>Simple Instructions:</strong> A beautifully designed guide to get you started in minutes.</span>
+                            </li>
+                        </ul>
+                        <div class="product-price">
+                            <p class="product-price-current">₹1,499</p>
+                            <p class="product-price-old">₹1,999</p>
+                        </div>
+                        <button class="btn-primary" onclick="openOrderModal()">Order Yours Today</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-divider"></div>
+
+            <div class="container">
+                <div class="product-section">
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <img src="images/arpan_mix.png" alt="Arpan Compost Kit"
+                            style="max-width: 70%; height: auto; object-fit: contain; border-radius: 1rem; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+                    </div>
+                    <div class="product-content">
+                        <div>
+                            <!-- <div class="section-label">The Product</div> -->
+                            <h2>Arpan compost kit</h2>
+                            <p style="max-width: 600px; margin: 0 0 1.5rem;">Arpan Compost kit is specificaly crafted to compost high carbon content like flowers quickly.</p>
+                        </div>
+                        
+                        <div class="product-price">
+                            <p class="product-price-current">₹200</p>
+                            <p class="product-price-old">₹380</p>
+                        </div>
+                        <button class="btn-primary" onclick="openOrderModal()">Order Yours Today</button>
+                    </div>
+                </div>
+            </div>
+            
+        </section>
+
+        <!-- Order Section -->
+        <section id="order">
+            <div class="container">
+                <div class="order-section">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1"></path>
+                        <circle cx="12" cy="8" r="2"></circle>
+                        <path d="M12 10v12"></path>
+                        <path d="M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z"></path>
+                        <path d="M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z"></path>
+                    </svg>
+                    <h2>Embrace the Cycle of Devotion</h2>
+                    <p>Join a community of mindful devotees transforming waste into worship. Start your composting journey and bring a new level of sanctity to your home.</p>
+                    <button class="btn-order" onclick="openOrderModal()">Buy Petal Compost Now - ₹1,499</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section-secondary">
+            <div class="container">
+                <div class="section-content" style="margin-bottom: 2rem;">
+                    <div class="section-label">Contact Us</div>
+                    
+                </div>
+                <div class="product-section">
+                    <div class="product-content">
+                        <form id="contactForm" onsubmit="handleContactSubmit(event)" class="contact-form">
+                            <div class="form-group">
+                                <label for="contactMessage">Your Message</label>
+                                <textarea id="contactMessage" name="contactMessage" rows="4" required
+                                    placeholder="Share your thoughts, feedback, or questions..." style="width: 100%; padding: 0.75rem; border-radius: 0.375rem; border: 1px solid hsl(var(--input)); font-family: inherit; font-size: 1rem; resize: vertical;"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactPhone">Phone Number (optional)</label>
+                                <input type="tel" id="contactPhone" name="contactPhone" placeholder="Enter your phone number (optional)">
+                            </div>
+                            
+                        </form>
+                    </div>
+                    <div class="product-content">
+                        <div>
+                            <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem;">Stay Connected</h3>
+                            <p style="color: hsl(var(--foreground) / 0.8); margin-bottom: 1rem;">
+                                Whether you’re curious about how Petal Compost works, want to share your experience, or need help getting started, we’re just a message away.
+                            </p>
+                            <button type="submit" class="btn-primary" style="margin-top: 0.75rem;">Submit</button>
+                            <p id="contactSuccess" style="display:none; margin-top: 1rem; color: hsl(var(--primary)); font-weight: 500;">
+                                Message sent. Thank you for reaching out!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-logo">
+                        <a href="/">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1"></path>
+                                <circle cx="12" cy="8" r="2"></circle>
+                                <path d="M12 10v12"></path>
+                                <path d="M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z"></path>
+                                <path d="M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z"></path>
+                            </svg>
+                            <p>Petal Compost</p>
+                        </a>
+                        <p class="footer-copyright">© 2025 Petal Compost. All Rights Reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    <!-- Order Modal -->
+    <div id="orderModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeOrderModal()" aria-label="Close modal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m18 6-12 12"></path>
+                    <path d="m6 6 12 12"></path>
+                </svg>
+            </button>
+            
+            <!-- Form Step -->
+            <div id="orderFormStep" class="modal-step">
+                <h2>Place Your Order</h2>
+                <p style="color: hsl(var(--foreground) / 0.7); margin-bottom: 1.5rem;">Please provide at least one way to contact you</p>
+                <form id="orderForm" onsubmit="handleOrderSubmit(event)">
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number</label>
+                        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number">
+                    </div>
+                    <p style="text-align: center; margin: 0.25rem 0; color: hsl(var(--muted-foreground)); font-size: 0.875rem;">
+                        or
+                    </p>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email address">
+                    </div>
+                    <p id="orderError" style="display:none; margin-top: 0.5rem; color: hsl(var(--destructive)); font-size: 0.875rem;">
+                        Please enter at least a phone number or an email address.
+                    </p>
+                    <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Proceed</button>
+                </form>
+            </div>
+
+            <!-- Status Bar Step -->
+            <div id="statusBarStep" class="modal-step" style="display: none;">
+                <h2>Processing Your Order</h2>
+                <div class="status-bar-container">
+                    <div class="status-bar" id="statusBar"></div>
+                </div>
+            </div>
+
+            <!-- Out of Stock Step -->
+            <div id="outOfStockStep" class="modal-step" style="display: none;">
+                <div style="text-align: center;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: hsl(var(--accent)); margin-bottom: 1rem;">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="m15 9-6 6"></path>
+                        <path d="m9 9 6 6"></path>
+                    </svg>
+                    <h2>Product Out of Stock</h2>
+                    <p style="color: hsl(var(--foreground) / 0.7); margin-top: 1rem;">We will let you know as soon as it's back in stock.</p>
+                    <button class="btn-primary" onclick="closeOrderModal()" style="margin-top: 1.5rem;">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openOrderModal() {
+            const modal = document.getElementById('orderModal');
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            // Reset form
+            document.getElementById('orderForm').reset();
+            // Show form step, hide others
+            document.getElementById('orderFormStep').style.display = 'block';
+            document.getElementById('statusBarStep').style.display = 'none';
+            document.getElementById('outOfStockStep').style.display = 'none';
+        }
+
+        function closeOrderModal() {
+            const modal = document.getElementById('orderModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        function handleOrderSubmit(event) {
+            event.preventDefault();
+            const phoneInput = document.getElementById('phoneNumber');
+            const emailInput = document.getElementById('email');
+            const errorEl = document.getElementById('orderError');
+
+            const phone = phoneInput ? phoneInput.value.trim() : '';
+            const email = emailInput ? emailInput.value.trim() : '';
+
+            // Validate: at least one of phone or email must be provided
+            if (!phone && !email) {
+                if (errorEl) {
+                    errorEl.style.display = 'block';
+                }
+                return;
+            } else if (errorEl) {
+                errorEl.style.display = 'none';
+            }
+            
+            // Hide form, show status bar
+            document.getElementById('orderFormStep').style.display = 'none';
+            document.getElementById('statusBarStep').style.display = 'block';
+            
+            // Animate status bar
+            const statusBar = document.getElementById('statusBar');
+            statusBar.style.width = '0%';
+            
+            // Trigger animation
+            setTimeout(() => {
+                statusBar.style.transition = 'width 1s ease-in-out';
+                statusBar.style.width = '100%';
+            }, 10);
+            
+            // After 1 second, show out of stock message
+            setTimeout(() => {
+                document.getElementById('statusBarStep').style.display = 'none';
+                document.getElementById('outOfStockStep').style.display = 'block';
+            }, 1100);
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('orderModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeOrderModal();
+            }
+        });
+    </script>
+
+    <script>
+        (() => {
+            const ENDPOINT = '/api/log';
+            const sessionKey = 'petal_session_id';
+            const sessionId = (() => {
+                const existing = localStorage.getItem(sessionKey);
+                if (existing) return existing;
+                const id = (crypto.randomUUID && crypto.randomUUID()) || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+                localStorage.setItem(sessionKey, id);
+                return id;
+            })();
+
+            const sections = ['hero', 'problem', 'solution', 'product', 'order'];
+
+            const canUseBeacon =
+                typeof location !== 'undefined' &&
+                (location.protocol === 'http:' || location.protocol === 'https:');
+
+            const sendLog = (payload) => {
+                try {
+                    const body = JSON.stringify({
+                        sessionId,
+                        ts: Date.now(),
+                        path: location.pathname,
+                        referrer: document.referrer,
+                        userAgent: navigator.userAgent,
+                        ...payload,
+                    });
+
+                    if (canUseBeacon && navigator.sendBeacon) {
+                        navigator.sendBeacon(ENDPOINT, new Blob([body], { type: 'application/json' }));
+                    } else {
+                        fetch(ENDPOINT, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body,
+                        }).catch(() => {});
+                    }
+                } catch (e) {
+                    // Ignore logging errors so they don't break the page
+                    console && console.warn && console.warn('Logging failed', e);
+                }
+            };
+
+            // Expose logger for other handlers (e.g., contact form)
+            window._petalLog = sendLog;
+
+            // Scroll tracking (debounced)
+            let scrollTimeout;
+            const logScroll = () => {
+                let seen = null;
+                for (const id of sections) {
+                    const el = document.getElementById(id);
+                    if (!el) continue;
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight * 0.6) seen = id;
+                }
+                if (seen) sendLog({ eventType: 'scroll', section: seen });
+            };
+            window.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(logScroll, 300);
+            });
+
+            // Click tracking
+            document.addEventListener('click', (e) => {
+                const btn = e.target.closest('button, a');
+                if (!btn) return;
+                const label = btn.innerText.trim().slice(0, 120);
+                const section = getSection(btn);
+                sendLog({ eventType: 'click', buttonLabel: label, section });
+            });
+
+            // Form submit tracking
+            const orderForm = document.getElementById('orderForm');
+            if (orderForm) {
+                orderForm.addEventListener('submit', () => {
+                    const phone = document.getElementById('phoneNumber')?.value || '';
+                    const email = document.getElementById('email')?.value || '';
+                    sendLog({ eventType: 'order_form_submit', phone, email, section: 'order_modal' });
+                });
+            }
+
+            function getSection(el) {
+                for (const id of sections) {
+                    const s = document.getElementById(id);
+                    if (s && s.contains(el)) return id;
+                }
+                return null;
+            }
+
+            // Initial scroll state
+            logScroll();
+        })();
+
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const messageEl = document.getElementById('contactMessage');
+            const phoneEl = document.getElementById('contactPhone');
+            const successEl = document.getElementById('contactSuccess');
+
+            const message = messageEl ? messageEl.value : '';
+            const phone = phoneEl ? phoneEl.value : '';
+
+            // Log contact submit using shared logger (includes sessionId, etc.)
+            try {
+                if (typeof window !== 'undefined' && typeof window._petalLog === 'function') {
+                    window._petalLog({
+                        eventType: 'contact_submit',
+                        section: 'contact',
+                        message,
+                        phone,
+                    });
+                }
+            } catch (e) {
+                // Swallow logging errors; UX should still succeed
+            }
+
+            if (successEl) {
+                successEl.style.display = 'block';
+            }
+
+            event.target.reset();
+        }
+    </script>
+</body>
+</html>
+
