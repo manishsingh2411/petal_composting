@@ -1350,7 +1350,7 @@
 
             const sections = ['hero', 'problem', 'solution', 'product', 'order', 'contact'];
 
-            const sendLog = (payload) => {
+            const sendLog = (payload, opts = {}) => {
                 const base = {
                     sessionId,
                     ts: Date.now(),
@@ -1373,14 +1373,16 @@
                 // Send to backend when on http/https
                 try {
                     const body = JSON.stringify(base);
-                    if (navigator.sendBeacon) {
-                        navigator.sendBeacon(ENDPOINT, new Blob([body], { type: 'application/json' }));
-                    } else {
+                    const useFetch = opts.forceFetch || !navigator.sendBeacon;
+                    if (useFetch) {
                         fetch(ENDPOINT, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body,
+                            keepalive: true,
                         }).catch(() => {});
+                    } else {
+                        navigator.sendBeacon(ENDPOINT, new Blob([body], { type: 'application/json' }));
                     }
                 } catch (e) {
                     if (typeof console !== 'undefined' && console.warn) {
@@ -1445,7 +1447,7 @@
                         email,
                         hasPhone: !!phone,
                         hasEmail: !!email,
-                    });
+                    }, { forceFetch: true });
                 });
             }
 
@@ -1497,6 +1499,38 @@
         const contactFormEl = document.getElementById('contactForm');
         if (contactFormEl) {
             contactFormEl.addEventListener('submit', handleContactSubmit);
+        }
+
+        // For contact form: force fetch when logging submit to match dev console payload and Vercel
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const messageEl = document.getElementById('contactMessage');
+            const phoneEl = document.getElementById('contactPhone');
+            const successEl = document.getElementById('contactSuccess');
+
+            const message = messageEl ? messageEl.value : '';
+            const phone = phoneEl ? phoneEl.value : '';
+
+            try {
+                if (typeof window !== 'undefined' && typeof window._petalLog === 'function') {
+                    window._petalLog({
+                        eventType: 'contact_submit',
+                        section: 'contact',
+                        message,
+                        phone,
+                        messageLength: message.length,
+                        hasPhone: !!phone,
+                    }, { forceFetch: true });
+                }
+            } catch (e) {
+                // swallow logging errors
+            }
+
+            if (successEl) {
+                successEl.style.display = 'block';
+            }
+
+            event.target.reset();
         }
     </script>
 </body>
