@@ -1360,11 +1360,13 @@
                     ...payload,
                 };
 
+                // Always console.log for visibility in both dev and prod
+                if (typeof console !== 'undefined' && console.log) {
+                    console.log('[LOG]', base);
+                }
+
                 // If opened as file:// just log to console and skip network
                 if (isDevFile) {
-                    if (typeof console !== 'undefined' && console.log) {
-                        console.log('[DEV LOG]', base);
-                    }
                     return;
                 }
 
