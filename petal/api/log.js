@@ -18,6 +18,12 @@ export default async function handler(req, res) {
       buttonLabel: body.buttonLabel || '',
       phone: body.phone || '',
       email: body.email || '',
+      message: body.message || '',
+      messageLength: typeof body.messageLength === 'number' ? body.messageLength : undefined,
+      hasPhone: typeof body.hasPhone === 'boolean' ? body.hasPhone : undefined,
+      hasEmail: typeof body.hasEmail === 'boolean' ? body.hasEmail : undefined,
+      sectionIndex: typeof body.sectionIndex === 'number' ? body.sectionIndex : undefined,
+      maxSectionIndex: typeof body.maxSectionIndex === 'number' ? body.maxSectionIndex : undefined,
     };
 
     // Log to Vercel function logs
