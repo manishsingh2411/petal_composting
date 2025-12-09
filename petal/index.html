@@ -1162,7 +1162,7 @@
                         <form id="contactForm" onsubmit="handleContactSubmit(event)" class="contact-form">
                             <div class="form-group">
                                 <label for="contactMessage">Your Message</label>
-                                <textarea id="contactMessage" name="contactMessage" rows="4" required
+                                <textarea id="contactMessage" name="contactMessage" rows="4"
                                     placeholder="Share your thoughts, feedback, or questions..." style="width: 100%; padding: 0.75rem; border-radius: 0.375rem; border: 1px solid hsl(var(--input)); font-family: inherit; font-size: 1rem; resize: vertical;"></textarea>
                             </div>
                             <div class="form-group">
@@ -1489,6 +1489,12 @@
             }
 
             event.target.reset();
+        }
+
+        // Ensure contact form submit handler is bound even when button is outside the form
+        const contactFormEl = document.getElementById('contactForm');
+        if (contactFormEl) {
+            contactFormEl.addEventListener('submit', handleContactSubmit);
         }
     </script>
 </body>
