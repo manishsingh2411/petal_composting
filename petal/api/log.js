@@ -29,10 +29,11 @@ export default async function handler(req, res) {
     // Log to Vercel function logs
     console.log(JSON.stringify(payload));
 
-    // Forward to Logtail if configured
+    // Forward to Logtail if configured (Better Stack regional ingest)
     const LOGTAIL_SOURCE_TOKEN = process.env.LOGTAIL_SOURCE_TOKEN;
+    const LOGTAIL_ENDPOINT = process.env.LOGTAIL_ENDPOINT || 'https://s1623547.eu-nbg-2.betterstackdata.com';
     if (LOGTAIL_SOURCE_TOKEN) {
-      await fetch('https://in.logtail.com/', {
+      await fetch(LOGTAIL_ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
