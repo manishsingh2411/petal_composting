@@ -1344,7 +1344,7 @@
                 return id;
             })();
 
-            const sections = ['hero', 'problem', 'solution', 'product', 'order'];
+            const sections = ['hero', 'problem', 'solution', 'product', 'order', 'contact'];
 
             const canUseNetwork =
                 typeof location !== 'undefined' &&
@@ -1385,17 +1385,31 @@
             // Expose logger for other handlers (e.g., contact form)
             window._petalLog = sendLog;
 
-            // Scroll tracking (debounced)
+            // Scroll tracking (debounced, track furthest section reached)
             let scrollTimeout;
+            let maxSectionIndex = -1;
             const logScroll = () => {
                 let seen = null;
-                for (const id of sections) {
+                let seenIndex = -1;
+                sections.forEach((id, idx) => {
                     const el = document.getElementById(id);
-                    if (!el) continue;
+                    if (!el) return;
                     const rect = el.getBoundingClientRect();
-                    if (rect.top < window.innerHeight * 0.6) seen = id;
+                    if (rect.top < window.innerHeight * 0.6) {
+                        seen = id;
+                        seenIndex = idx;
+                    }
+                });
+
+                if (seen && seenIndex > maxSectionIndex) {
+                    maxSectionIndex = seenIndex;
+                    sendLog({
+                        eventType: 'scroll',
+                        section: seen,
+                        sectionIndex: seenIndex,
+                        maxSectionIndex: maxSectionIndex,
+                    });
                 }
-                if (seen) sendLog({ eventType: 'scroll', section: seen });
             };
             window.addEventListener('scroll', () => {
                 clearTimeout(scrollTimeout);
@@ -1417,7 +1431,14 @@
                 orderForm.addEventListener('submit', () => {
                     const phone = document.getElementById('phoneNumber')?.value || '';
                     const email = document.getElementById('email')?.value || '';
-                    sendLog({ eventType: 'order_form_submit', phone, email, section: 'order_modal' });
+                    sendLog({
+                        eventType: 'order_form_submit',
+                        section: 'order_modal',
+                        phone,
+                        email,
+                        hasPhone: !!phone,
+                        hasEmail: !!email,
+                    });
                 });
             }
 
@@ -1450,6 +1471,8 @@
                         section: 'contact',
                         message,
                         phone,
+                        messageLength: message.length,
+                        hasPhone: !!phone,
                     });
                 }
             } catch (e) {
