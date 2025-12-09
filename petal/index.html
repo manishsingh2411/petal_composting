@@ -1336,6 +1336,10 @@
         (() => {
             const ENDPOINT = '/api/log';
             const sessionKey = 'petal_session_id';
+            const isDevFile =
+                typeof location !== 'undefined' &&
+                location.protocol === 'file:';
+
             const sessionId = (() => {
                 const existing = localStorage.getItem(sessionKey);
                 if (existing) return existing;
@@ -1346,25 +1350,27 @@
 
             const sections = ['hero', 'problem', 'solution', 'product', 'order', 'contact'];
 
-            const canUseNetwork =
-                typeof location !== 'undefined' &&
-                (location.protocol === 'http:' || location.protocol === 'https:');
-
             const sendLog = (payload) => {
-                // When viewing the file directly (file://), skip network logging entirely
-                if (!canUseNetwork) {
+                const base = {
+                    sessionId,
+                    ts: Date.now(),
+                    path: location.pathname,
+                    referrer: document.referrer,
+                    userAgent: navigator.userAgent,
+                    ...payload,
+                };
+
+                // If opened as file:// just log to console and skip network
+                if (isDevFile) {
+                    if (typeof console !== 'undefined' && console.log) {
+                        console.log('[DEV LOG]', base);
+                    }
                     return;
                 }
-                try {
-                    const body = JSON.stringify({
-                        sessionId,
-                        ts: Date.now(),
-                        path: location.pathname,
-                        referrer: document.referrer,
-                        userAgent: navigator.userAgent,
-                        ...payload,
-                    });
 
+                // Send to backend when on http/https
+                try {
+                    const body = JSON.stringify(base);
                     if (navigator.sendBeacon) {
                         navigator.sendBeacon(ENDPOINT, new Blob([body], { type: 'application/json' }));
                     } else {
@@ -1375,9 +1381,8 @@
                         }).catch(() => {});
                     }
                 } catch (e) {
-                    // Ignore logging errors so they don't break the page
                     if (typeof console !== 'undefined' && console.warn) {
-                        console.warn('Logging failed', e);
+                        console.warn('Logging failed', e, base);
                     }
                 }
             };
