@@ -29,6 +29,19 @@ export default async function handler(req, res) {
     // Log to Vercel function logs
     console.log(JSON.stringify(payload));
 
+    // Forward to Logtail if configured
+    const LOGTAIL_SOURCE_TOKEN = process.env.LOGTAIL_SOURCE_TOKEN;
+    if (LOGTAIL_SOURCE_TOKEN) {
+      await fetch('https://in.logtail.com/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${LOGTAIL_SOURCE_TOKEN}`,
+        },
+        body: JSON.stringify(payload),
+      }).catch(() => {});
+    }
+
     return res.status(200).json({ ok: true });
   } catch (err) {
     console.error('log handler error', err);
